@@ -1,0 +1,7 @@
+{
+  "name": "Copy of Chef AI - Your Personal Sous Chef",
+  "description": "An AI-powered culinary companion that generates personalized recipes based on ingredients you have on hand. Features fridge-to-recipe image recognition, dietary customization, and a curated library of your favorite dishes.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
