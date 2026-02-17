@@ -1,7 +1,8 @@
 
 import React from 'react';
-import { Settings, Bell, Shield, LogOut, ChevronRight } from 'lucide-react';
+import { Settings, Bell, Shield, LogOut, LogIn, ChevronRight } from 'lucide-react';
 import { User } from '../types';
+import { useAuth } from '../context/AuthContext';
 
 interface ProfileViewProps {
   user: User;
@@ -9,11 +10,12 @@ interface ProfileViewProps {
 }
 
 const ProfileView: React.FC<ProfileViewProps> = ({ user }) => {
+  const { currentUser, signInWithGoogle, logout } = useAuth();
+
   const menuItems = [
     { icon: Bell, label: 'Notifications', color: 'text-blue-500', bg: 'bg-blue-50' },
     { icon: Settings, label: 'Preferences', color: 'text-[#F3A23A]', bg: 'bg-[#FFF5E9]' },
     { icon: Shield, label: 'Privacy & Security', color: 'text-green-500', bg: 'bg-green-50' },
-    { icon: LogOut, label: 'Sign Out', color: 'text-red-500', bg: 'bg-red-50' },
   ];
 
   return (
@@ -48,12 +50,12 @@ const ProfileView: React.FC<ProfileViewProps> = ({ user }) => {
       </div>
 
       <div className="bg-white rounded-[2.5rem] p-4 soft-shadow">
-        {menuItems.map((item, idx) => {
+        {menuItems.map((item) => {
           const Icon = item.icon;
           return (
-            <button 
+            <button
               key={item.label}
-              className={`w-full flex items-center justify-between p-4 ${idx !== menuItems.length - 1 ? 'border-b border-gray-50' : ''}`}
+              className="w-full flex items-center justify-between p-4 border-b border-gray-50"
             >
               <div className="flex items-center gap-4">
                 <div className={`w-10 h-10 ${item.bg} rounded-2xl flex items-center justify-center ${item.color}`}>
@@ -65,6 +67,20 @@ const ProfileView: React.FC<ProfileViewProps> = ({ user }) => {
             </button>
           );
         })}
+
+        {/* Auth Button */}
+        <button
+          onClick={currentUser ? logout : signInWithGoogle}
+          className="w-full flex items-center justify-between p-4"
+        >
+          <div className="flex items-center gap-4">
+            <div className={`w-10 h-10 ${currentUser ? 'bg-red-50' : 'bg-green-50'} rounded-2xl flex items-center justify-center ${currentUser ? 'text-red-500' : 'text-green-500'}`}>
+              {currentUser ? <LogOut size={20} /> : <LogIn size={20} />}
+            </div>
+            <span className="font-bold text-gray-700">{currentUser ? 'Sign Out' : 'Sign In with Google'}</span>
+          </div>
+          <ChevronRight size={18} className="text-gray-300" />
+        </button>
       </div>
     </div>
   );

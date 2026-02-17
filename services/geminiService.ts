@@ -2,7 +2,7 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Recipe } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || 'AIzaSyDHDzKxGsPcqmm5BTgsbPuLMZGb82EivOg' });
 
 const RECIPE_SCHEMA = {
   type: Type.OBJECT,
@@ -60,7 +60,7 @@ export const generateImageForRecipe = async (title: string, description: string)
         return `data:image/png;base64,${part.inlineData.data}`;
       }
     }
-    
+
     // Fallback if no image generated
     return `https://picsum.photos/seed/${title.replace(/\s/g, '')}/600/400`;
   } catch (error) {
@@ -89,7 +89,7 @@ export const generateRecipesFromIngredients = async (ingredients: string[], diet
 
     const text = response.text || '[]';
     const recipes: Recipe[] = JSON.parse(text);
-    
+
     // Generate actual relevant images for each recipe in parallel using nano banana
     const recipesWithImages = await Promise.all(
       recipes.map(async (recipe) => {
@@ -100,7 +100,7 @@ export const generateRecipesFromIngredients = async (ingredients: string[], diet
         };
       })
     );
-    
+
     return recipesWithImages;
   } catch (error) {
     console.error("Error generating recipes:", error);
